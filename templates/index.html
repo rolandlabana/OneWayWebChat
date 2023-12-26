@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Client</title>
+</head>
+<body>
+    <h1>Chat Client</h1>
+    <div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;"></div>
+    <form id="message-form">
+        <input type="text" id="message" placeholder="Type your message...">
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('message-form');
+        const chatBox = document.getElementById('chat-box');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = document.getElementById('message').value;
+            
+            // Send message to the server
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        appendToChat(`You: ${message}`);
+                        appendToChat(`Server: ${xhr.responseText}`);
+                    } else {
+                        console.error('Error:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.open('POST', '/send_message', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send(`message=${message}`);
+            document.getElementById('message').value = '';
+        });
+
+        function appendToChat(message) {
+            const para = document.createElement('p');
+            para.textContent = message;
+            chatBox.appendChild(para);
+        }
+    </script>
+</body>
+</html>
+
