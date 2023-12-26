@@ -9,7 +9,7 @@ Run the client program in another terminal window:
 `python3 app4.py`
 
 In a browser window, point the broswer to the following location:
-`locahost:5000`
+`localhost:5000`
 
 # Set up
 Make sure server and client are in the same directly and there
